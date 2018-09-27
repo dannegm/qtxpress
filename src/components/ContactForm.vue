@@ -17,6 +17,7 @@
                 <p class="control">
                     <button
                         class="button is-info"
+                        :class="{'is-loading':isSending}"
                         @click="sendEmail()">
                         Send message
                     </button>
@@ -32,20 +33,22 @@ export default {
     name: 'ContactForm',
     methods: {
         async sendEmail () {
+            this.isSending = true;
             try {
                 const sendEmail = functions.httpsCallable ('sendEmail');
                 await sendEmail ({
                     from: `${this.name} <${this.email}>`,
                     to: 'dannegm@gmail.com',
-                    to: 'memoadian@gmail.com',
                     subject: `Tienes un mensade de ${this.name}`,
                     text: this.message,
                 });
 
                 this.success ('El mensaje fue enviado');
                 this.message = '';
+                this.isSending = false;
             } catch (e) {
                 this.danger ('Hubo un error, mira la consola');
+                this.isSending = false;@
                 console.error(e);
                 console.log(JSON.stringify(e, null, 4));
             }
@@ -67,6 +70,7 @@ export default {
     },
     data () {
         return {
+            isSending: false,
             name: '',
             email: '',
             message: '',
