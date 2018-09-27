@@ -14,7 +14,7 @@
                 <div class="container">
                     <div class="navbar-brand">
                         <a class="navbar-item">
-                            <img src="https://bulma.io/images/bulma-type-white.png" alt="Logo">
+                            <h1 class="title">[QT]Xpress</h1>
                         </a>
                         <span class="navbar-burger burger" data-target="navbarMenuHeroB">
                             <span></span>
@@ -45,7 +45,7 @@
                 <div class="container">
                     <ul>
                         <li>
-                            <a>En construcción</a>
+                            <a>PRÓXIMAMENTE</a>
                         </li>
                     </ul>
                 </div>
