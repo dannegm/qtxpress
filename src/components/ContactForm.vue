@@ -1,16 +1,15 @@
 <template>
     <div class="contact-form">
         <section>
-            <b-field horizontal label="Name">
+            <b-field horizontal label="Name" :type="errors.name ? 'is-danger' : ''" :message="errors.name">
                 <b-input v-model="name"></b-input>
             </b-field>
-
-            <b-field horizontal label="Email">
-                <b-input v-model="email" type="email"></b-input>
+            <b-field horizontal label="Email" :type="errors.name ? 'is-danger' : ''" :message="errors.email">
+                <b-input v-model.trim="email" type="email"></b-input>
             </b-field>
 
-            <b-field horizontal label="Message">
-                <b-input v-model="message" type="textarea"></b-input>
+            <b-field horizontal label="Message" :type="errors.name ? 'is-danger' : ''" :message="errors.message">
+                <b-input v-model.trim="message" type="textarea"></b-input>
             </b-field>
 
             <b-field horizontal>
@@ -29,28 +28,43 @@
 
 <script>
 import { functions } from '@/services/firebase'
+import { required, email } from 'vuelidate/lib/validators'
 export default {
     name: 'ContactForm',
     methods: {
         async sendEmail () {
-            this.isSending = true;
-            try {
-                const sendEmail = functions.httpsCallable ('sendEmail');
-                await sendEmail ({
-                    from: `${this.name} <${this.email}>`,
-                    to: 'dannegm@gmail.com',
-                    subject: `Tienes un mensade de ${this.name}`,
-                    text: this.message,
-                });
+            this.errors = {
+                name: null,
+                email: null,
+                message: null,
+            }
 
-                this.success ('El mensaje fue enviado');
-                this.message = '';
-                this.isSending = false;
-            } catch (e) {
-                this.danger ('Hubo un error, mira la consola');
-                this.isSending = false;
-                console.error(e);
-                console.log(JSON.stringify(e, null, 4));
+            this.$v.$touch ();
+            if (!this.$v.$invalid) {
+                this.isSending = true;
+                try {
+                    const sendEmail = functions.httpsCallable ('sendEmail');
+                    await sendEmail ({
+                        from: `${this.name} <${this.email}>`,
+                        to: 'dannegm@gmail.com',
+                        subject: `Tienes un mensade de ${this.name}`,
+                        text: this.message,
+                    });
+
+                    this.success ('El mensaje fue enviado');
+                    this.message = '';
+                    this.isSending = false;
+                } catch (e) {
+                    this.danger ('Hubo un error, intentalo de nuevo');
+                    this.isSending = false;
+                    console.error(e);
+                    console.log(JSON.stringify(e, null, 4));
+                }
+            } else {
+                this.danger ('Verifica tu información de contacto');
+                if (!this.$v.name.required) this.errors.name = 'Escribe tu nombre';
+                if (!this.$v.email.required) this.errors.email = 'Escribe tu correo electrónico';
+                if (!this.$v.message.required) this.errors.message = 'Cuéntanos algo';
             }
         },
         success (msg) {
@@ -71,10 +85,23 @@ export default {
     data () {
         return {
             isSending: false,
+            errors: {},
             name: '',
             email: '',
             message: '',
         }
+    },
+    validations: {
+        name: {
+            required,
+        },
+        email: {
+            required,
+            email,
+        },
+        message: {
+            required,
+        },
     }
 }
 </script>

@@ -1,14 +1,16 @@
 <template>
-    <div class="hero-body">
-        <div class="container has-text-centered">
-            <p class="title">
-                Inicio
-            </p>
-            <p class="subtitle">
-                Este es el inicio
-            </p>
+    <section class="hero is-fullheight is-dark is-bold">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <p class="title">
+                    [QT]Xpress
+                </p>
+                <p class="subtitle">
+                    Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                </p>
+            </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <script>
