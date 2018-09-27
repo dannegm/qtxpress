@@ -27,13 +27,14 @@
 </template>
 
 <script>
-import { send } from '@/services/mailgun'
+import { functions } from '@/services/firebase'
 export default {
     name: 'ContactForm',
     methods: {
         async sendEmail () {
             try {
-                await send ({
+                const sendEmail = functions.httpsCallable ('sendEmail');
+                await sendEmail ({
                     from: `${this.name} <${this.email}>`,
                     to: 'dannegm@gmail.com',
                     to: 'memoadian@gmail.com',
