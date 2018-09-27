@@ -16,24 +16,11 @@
             <b-field horizontal>
                 <p class="control">
                     <button
-                        class="button is-primary"
+                        class="button is-info"
                         @click="sendEmail()">
                         Send message
                     </button>
                 </p>
-            </b-field>
-        </section>
-
-        <section>
-            <b-field horizontal>
-                <b-notification auto-close has-icon type="is-success" :active.sync="success">
-                    El mensaje fue enviado
-                </b-notification>
-            </b-field>
-            <b-field horizontal>
-                <b-notification auto-close has-icon type="is-danger" :active.sync="error">
-                    Hubo un error, mira la consola
-                </b-notification>
             </b-field>
         </section>
     </div>
@@ -41,35 +28,48 @@
 
 <script>
 import { send } from '@/services/mailgun'
-
 export default {
-  name: 'ContactForm',
-  methods: {
-      async sendEmail () {
-        try {
-            await send ({
-                from: `${this.name} <${this.email}>`,
-                to: 'dannegm@gmail.com',
-                to: 'memoadian@gmail.com',
-                subject: `Tienes un mensade de ${this.name}`,
-                text: this.message,
-            });
+    name: 'ContactForm',
+    methods: {
+        async sendEmail () {
+            try {
+                await send ({
+                    from: `${this.name} <${this.email}>`,
+                    to: 'dannegm@gmail.com',
+                    to: 'memoadian@gmail.com',
+                    subject: `Tienes un mensade de ${this.name}`,
+                    text: this.message,
+                });
 
-            this.success = true;
-            this.message = '';
-        } catch (e) {
-            this.error = true;
-            console.log(e);
-            console.log(JSON.stringify(e, null, 4));
+                this.success ('El mensaje fue enviado');
+                this.message = '';
+            } catch (e) {
+                this.danger ('Hubo un error, mira la consola');
+                console.error(e);
+                console.log(JSON.stringify(e, null, 4));
+            }
+        },
+        success (msg) {
+            this.$toast.open ({
+                message: msg,
+                type: 'is-success',
+                position: 'is-bottom',
+            })
+        },
+        danger (msg) {
+            this.$toast.open ({
+                message: msg,
+                type: 'is-danger',
+                position: 'is-bottom',
+            })
         }
-      }
-  },
-  data: () => ({
-      name: 'Daniel García',
-      email: 'im@danielgarcia.me',
-      message: 'Esto es un mensaje de prueba desde Axios/Vue',
-      success: false,
-      error: false,
-  })
+    },
+    data () {
+        return {
+            name: '',
+            email: '',
+            message: '',
+        }
+    }
 }
 </script>

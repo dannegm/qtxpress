@@ -2,10 +2,10 @@
     <div class="hero-body">
         <div class="container has-text-centered">
             <p class="title">
-                Inicio
+                Servicios
             </p>
             <p class="subtitle">
-                Este es el inicio
+                Los servicios que ofrecemos
             </p>
         </div>
     </div>
@@ -13,6 +13,6 @@
 
 <script>
 export default {
-    name: 'home',
+    name: 'services',
 }
 </script>

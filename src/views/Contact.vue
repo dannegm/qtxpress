@@ -2,17 +2,19 @@
     <div class="hero-body">
         <div class="container has-text-centered">
             <p class="title">
-                Inicio
+                Contacto
             </p>
-            <p class="subtitle">
-                Este es el inicio
-            </p>
+            <ContactForm />
         </div>
     </div>
 </template>
 
 <script>
+import ContactForm from '@/components/ContactForm'
 export default {
-    name: 'home',
+    name: 'contact',
+    components: {
+        ContactForm,
+    }
 }
 </script>

@@ -2,10 +2,10 @@
     <div class="hero-body">
         <div class="container has-text-centered">
             <p class="title">
-                Inicio
+                Nosotros
             </p>
             <p class="subtitle">
-                Este es el inicio
+                Este es un texto que habla de nosotros
             </p>
         </div>
     </div>
@@ -13,6 +13,6 @@
 
 <script>
 export default {
-    name: 'home',
+    name: 'about',
 }
 </script>
