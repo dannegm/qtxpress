@@ -48,7 +48,7 @@ export default {
                 this.isSending = false;
             } catch (e) {
                 this.danger ('Hubo un error, mira la consola');
-                this.isSending = false;@
+                this.isSending = false;
                 console.error(e);
                 console.log(JSON.stringify(e, null, 4));
             }
