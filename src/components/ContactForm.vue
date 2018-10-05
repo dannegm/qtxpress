@@ -120,8 +120,9 @@ export default {
 
 <style lang="less" scoped>
 .contact-form {
-    input, textarea, button {
+    .input, .textarea, .button {
         border-radius: 0 !important;
+        box-shadow: none !important;
     }
     .button {
         background: #34088f !important;

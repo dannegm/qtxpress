@@ -70,7 +70,9 @@
                     <div class="columns">
                         <div class="slot column is-one-third">
                             <h1 class="title">
-                                Ubicación Estrategica
+                                <i class="qt qt-marker"></i>
+                                Ubicación
+                                <br />Estrategica
                             </h1>
                             <p class="subtitle">
                                 Oficina ubicada estrategicamente en Cadereyta Jimenez, Nuevo León, para optimizar los tiempos de traslado.
@@ -78,18 +80,22 @@
                         </div>
                         <div class="slot column is-one-third">
                             <h1 class="title">
-                                Ubicación Estrategica
+                                <i class="qt qt-handler"></i>
+                                Operadores
+                                <br />Certificados
                             </h1>
                             <p class="subtitle">
-                                Oficina ubicada estrategicamente en Cadereyta Jimenez, Nuevo León, para optimizar los tiempos de traslado.
+                                Personal calificado y expertos en el transporte  de combustibles y residuos peligrosos.
                             </p>
                         </div>
                         <div class="slot column is-one-third">
                             <h1 class="title">
-                                Ubicación Estrategica
+                                <i class="qt qt-haarp"></i>
+                                Rastreo
+                                <br />Satelital
                             </h1>
                             <p class="subtitle">
-                                Oficina ubicada estrategicamente en Cadereyta Jimenez, Nuevo León, para optimizar los tiempos de traslado.
+                                Mantenemos monitoreadas todas nuestras unidades las 24 horas, los 365 días del año.
                             </p>
                         </div>
                     </div>
@@ -180,9 +186,17 @@ export default {
                 padding: 4rem;
 
                 .title {
-                    font-size: 1.4rem !important;
+                    font-size: 1.6rem !important;
                     font-weight: 500;
                     margin-bottom: 3rem;
+                    overflow: hidden;
+
+                    i.qt {
+                        display: block;
+                        float: left;
+                        font-size: 3rem;
+                        margin-right: 2rem;
+                    }
                 }
                 .subtitle {
                     font-size: 1rem !important;

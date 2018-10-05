@@ -15,28 +15,49 @@
                 <div class="container">
                     <div class="columns">
                         <div class="slot column is-one-third">
-                            <h1 class="title">
-                                Dirección
-                            </h1>
-                            <p class="subtitle">
-                                Calle, Ciudad Mante, #0, Col. Martín de Zavala, Cadereyta Jiménez.
-                            </p>
+                            <div class="media">
+                                <div class="media-left">
+                                    <i class="qt qt-marker"></i>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4">
+                                        Dirección
+                                    </p>
+                                    <p class="subtitle">
+                                        Calle, Ciudad Mante, #0, Col. Martín de Zavala, Cadereyta Jiménez.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                         <div class="slot column is-one-third">
-                            <h1 class="title">
-                                Correo Electrónico
-                            </h1>
-                            <p class="subtitle">
-                                info@qualitytank.com
-                            </p>
+                            <div class="media">
+                                <div class="media-left">
+                                    <i class="qt qt-message"></i>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4">
+                                        Correo Electrónico
+                                    </p>
+                                    <p class="subtitle">
+                                        info@qualitytank.com
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                         <div class="slot column is-one-third">
-                            <h1 class="title">
-                                Teléfono
-                            </h1>
-                            <p class="subtitle">
-                                01(828)2841778, 01(81)10945418
-                            </p>
+                            <div class="media">
+                                <div class="media-left">
+                                    <i class="qt qt-message"></i>
+                                </div>
+                                <div class="media-phone">
+                                    <p class="title is-4">
+                                        Teléfono
+                                    </p>
+                                    <p class="subtitle">
+                                        01(828)2841778, 01(81)10945418
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -67,7 +88,7 @@
                 :zoom="8"
                 :options="{styles:mapStyle}"
                 style="width: 100%; height: 100%;">
-                <GmapMarker :position="mapLocation" />
+                <GmapMarker :position="mapLocation" :icon="mapMarker.icon" />
             </GmapMap>
         </section>
     </div>
@@ -99,6 +120,19 @@ export default {
             mapLocation: {
                 lat: 25.6490376,
                 lng: -100.4431822
+            },
+            mapMarker: {
+                icon: {
+                    anchor: {
+                        x: 0.5,
+                        y: 1,
+                    },
+                    scaledSize: {
+                        width: 32,
+                        height: 42,
+                    },
+                    url: '/img/green-marker.png',
+                }
             }
         }
     }
@@ -129,6 +163,17 @@ export default {
         .slot {
             padding: 0rem 4rem;
 
+            .media-left {
+                background: #340885;
+                color: #fff;
+                font-size: 3rem;
+                width: 72px;
+                height: 72px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
             .title {
                 font-size: 1.4rem !important;
                 font-weight: 500;
@@ -148,9 +193,6 @@ export default {
             b {
                 color: #34088f !important;
             }
-        }
-        p {
-
         }
     }
 }

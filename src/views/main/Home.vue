@@ -5,10 +5,10 @@
             style="background-image: url('img/slider/slider1.jpg') !important">
             <div class="hero-body">
                 <div class="container">
-                    <p class="title">
+                    <p class="title" v-appear="'slideInLeft'">
                         Ubicación Estratégica
                     </p>
-                    <p class="subtitle">
+                    <p class="subtitle" v-appear="'slideInRight'">
                         Oficina ubicada estratégicamente en Cadereyta Jiménez, Nuevo León para optimizar los tiempos de entrega.
                     </p>
                 </div>
@@ -16,18 +16,25 @@
         </section>
         <section id="slider-footer" class="hero">
             <div class="hero-body">
-                <div class="container">
-                    <h1 class="title">
-                        Rápido <b>Seguro</b> y <b>Confiable</b>
-                    </h1>
-                    <p class="subtitle">
-                        Brindar el mejor servicio con estas características es nuestro compromiso
-                    </p>
+                <div class="container" v-appear="'slideInLeft'">
+                    <div class="columns">
+                        <div class="column is-one-fifth has-text-right">
+                            <i class="qt qt-truck"></i>
+                        </div>
+                        <div class="column">
+                            <h1 class="title">
+                                Rápido <b>Seguro</b> y <b>Confiable</b>
+                            </h1>
+                            <p class="subtitle">
+                                Brindar el mejor servicio con estas características es nuestro compromiso
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
         <section id="separator" class="hero has-text-centered">
-            <div class="hero-body">
+            <div class="hero-body" v-appear="'slideInUp'">
                 <div class="container">
                     <h1 class="title">
                         Confianza, <b>Innovación</b> y Adaptación
@@ -43,7 +50,7 @@
             <div class="container">
                 <div class="columns is-4">
                     <div class="column is-one-third">
-                        <div class="card">
+                        <div class="card" v-appear="'zoomIn'">
                             <div class="card-image">
                                 <figure class="image">
                                     <img src="/img/home/card3.jpg" />
@@ -59,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="column is-one-third">
+                    <div class="column is-one-third" v-appear="'zoomIn'">
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image">
@@ -76,7 +83,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="column is-one-third">
+                    <div class="column is-one-third" v-appear="'zoomIn'">
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image">
@@ -134,6 +141,9 @@ export default {
     }
     #slider-footer {
         background: #cfcfcf !important;
+        .qt-truck {
+            font-size: 4rem;
+        }
         .title {
             font-size: 2em !important;
         }
