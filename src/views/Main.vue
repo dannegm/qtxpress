@@ -16,7 +16,7 @@
                     <div class="navbar-end">
                         <a
                             class="navbar-item"
-                            v-for="route in Object.values(routes)"
+                            v-for="route in Object.values(routes).filter(i => i.navbar)"
                             :key="route.name"
                             :class="{'is-active': route.selected}"
                             @click="go(route.name)">
@@ -55,7 +55,6 @@ export default {
         },
         go (route) {
             this.$router.push ({ name: route })
-            this.setRoute ()
         },
         handleScroll () {
             if (window.scrollY > 80) {
@@ -74,30 +73,45 @@ export default {
     beforeDestroy () {
         window.removeEventListener('scroll', this.handleScroll);
     },
+    watch: {
+        $route () {
+            this.setRoute ()
+        },
+    },
     data () {
         return {
             scrolled: false,
             currentRoute: null,
             routes: {
+                ['main']: {
+                    name: 'main',
+                    displayName: 'Inicio',
+                    selected: false,
+                    navbar: false,
+                },
                 ['main.home']: {
                     name: 'main.home',
                     displayName: 'Inicio',
                     selected: false,
+                    navbar: true,
                 },
                 ['main.about']: {
                     name: 'main.about',
                     displayName: 'Nosotros',
                     selected: false,
+                    navbar: true,
                 },
                 ['main.services']: {
                     name: 'main.services',
                     displayName: 'Servicios',
                     selected: false,
+                    navbar: true,
                 },
                 ['main.contact']: {
                     name: 'main.contact',
                     displayName: 'Contacto',
                     selected: false,
+                    navbar: true,
                 },
             }
         }

@@ -65,6 +65,7 @@
             <GmapMap
                 :center="mapLocation"
                 :zoom="8"
+                :options="{styles:mapStyle}"
                 style="width: 100%; height: 100%;">
                 <GmapMarker :position="mapLocation" />
             </GmapMap>
@@ -75,6 +76,9 @@
 <script>
 import Vue from 'vue'
 import * as VueGoogleMaps from 'vue2-google-maps'
+
+import { sanFransisco } from '@/utils/mapStyles'
+
 import ContactForm from '@/components/ContactForm'
 
 Vue.use (VueGoogleMaps, {
@@ -91,6 +95,7 @@ export default {
     },
     data () {
         return {
+            mapStyle: sanFransisco,
             mapLocation: {
                 lat: 25.6490376,
                 lng: -100.4431822

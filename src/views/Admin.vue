@@ -20,7 +20,7 @@
             <v-list dense>
                 <v-divider class="hidden"></v-divider>
                 <template
-                    v-for="route in Object.values(routes)">
+                    v-for="route in Object.values(routes).filter(i => i.navbar)">
                     <v-list-tile :key="route.name" @click="go(route.name)">
                         <v-list-tile-action>
                             <v-icon>{{ route.icon }}</v-icon>
@@ -94,7 +94,7 @@ const GoogleAuthProvider = new firebase.auth.GoogleAuthProvider ();
 export default {
     methods: {
         async requestLogin () {
-            const AuthResult = await auth.signInWithPopup (GoogleAuthProvider)
+            return await auth.signInWithPopup (GoogleAuthProvider)
         },
         async requestOut () {
             return await auth.signOut ()
@@ -108,7 +108,6 @@ export default {
         },
         go (route) {
             this.$router.push ({ name: route })
-            this.setRoute ()
         }
     },
     async mounted () {
@@ -134,6 +133,11 @@ export default {
             }
         })
     },
+    watch: {
+        $route () {
+            this.setRoute ()
+        },
+    },
     data () {
         return {
             auth: {
@@ -149,11 +153,20 @@ export default {
             currentRoute: null,
             routes: {
                 ['admin.resume']: {
+                    name: 'admin',
+                    displayName: 'Root',
+                    icon: 'dashboard',
+                    selected: false,
+                    divider: false,
+                    navbar: false,
+                },
+                ['admin.resume']: {
                     name: 'admin.resume',
                     displayName: 'Resumen',
                     icon: 'dashboard',
                     selected: false,
                     divider: true,
+                    navbar: true,
                 },
                 ['admin.slider']: {
                     name: 'admin.slider',
@@ -161,12 +174,14 @@ export default {
                     icon: 'view_carousel',
                     selected: false,
                     divider: true,
+                    navbar: true,
                 },
                 ['admin.settings']: {
                     name: 'admin.settings',
                     displayName: 'Configuración',
                     icon: 'settings',
                     selected: false,
+                    navbar: true,
                 },
                 ['admin.users']: {
                     name: 'admin.users',
@@ -174,6 +189,7 @@ export default {
                     icon: 'person',
                     selected: false,
                     divider: true,
+                    navbar: true,
                 },
             }
         }
