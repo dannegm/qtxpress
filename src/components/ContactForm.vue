@@ -1,34 +1,42 @@
 <template>
     <div class="contact-form">
         <section>
-            <b-field horizontal label="Name" :type="errors.name ? 'is-danger' : ''" :message="errors.name">
-                <b-input v-model="name"></b-input>
-            </b-field>
-            <b-field horizontal label="Email" :type="errors.name ? 'is-danger' : ''" :message="errors.email">
-                <b-input v-model.trim="email" type="email"></b-input>
-            </b-field>
+            <div class="columns">
+                <div class="column is-half">
+                    <b-field :type="errors.name ? 'is-danger' : ''" :message="errors.name">
+                        <b-input v-model="name" placeholder="Nombre"></b-input>
+                    </b-field>
+                    <b-field :type="errors.phone ? 'is-danger' : ''" :message="errors.phone">
+                        <b-input v-model.trim="phone" type="tel" placeholder="Teléfono"></b-input>
+                    </b-field>
+                    <b-field :type="errors.name ? 'is-danger' : ''" :message="errors.email">
+                        <b-input v-model.trim="email" type="email" placeholder="E-mail"></b-input>
+                    </b-field>
+                </div>
 
-            <b-field horizontal label="Message" :type="errors.name ? 'is-danger' : ''" :message="errors.message">
-                <b-input v-model.trim="message" type="textarea"></b-input>
-            </b-field>
-
-            <b-field horizontal>
-                <p class="control">
-                    <button
-                        class="button is-info"
-                        :class="{'is-loading':isSending}"
-                        @click="sendEmail()">
-                        Send message
-                    </button>
-                </p>
-            </b-field>
+                <div class="column is-half">
+                    <b-field :type="errors.name ? 'is-danger' : ''" :message="errors.message">
+                        <b-input v-model.trim="message" type="textarea" placeholder="Mensaje"></b-input>
+                    </b-field>
+                    <b-field>
+                        <p class="control">
+                            <button
+                                class="button is-link is-fullwidth"
+                                :class="{'is-loading':isSending}"
+                                @click="sendEmail()">
+                                Send message
+                            </button>
+                        </p>
+                    </b-field>
+                </div>
+            </div>
         </section>
     </div>
 </template>
 
 <script>
 import { functions } from '@/services/firebase'
-import { required, email } from 'vuelidate/lib/validators'
+import { required, email, numeric } from 'vuelidate/lib/validators'
 export default {
     name: 'ContactForm',
     methods: {
@@ -87,6 +95,7 @@ export default {
             isSending: false,
             errors: {},
             name: '',
+            phone: '',
             email: '',
             message: '',
         }
@@ -99,9 +108,23 @@ export default {
             required,
             email,
         },
+        phone: {
+            numeric,
+        },
         message: {
             required,
         },
     }
 }
 </script>
+
+<style lang="less" scoped>
+.contact-form {
+    input, textarea, button {
+        border-radius: 0 !important;
+    }
+    .button {
+        background: #34088f !important;
+    }
+}
+</style>

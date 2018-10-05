@@ -1,10 +1,10 @@
 <template>
     <div id="app">
-        <nav class="navbar is-dark">
+        <nav id="navbar" class="navbar is-transparent is-fixed-top" :class="{'scrolled':scrolled}">
             <div class="container">
                 <div class="navbar-brand">
                     <a class="navbar-item">
-                        <h1 class="title has-text-white">[QT]Xpress</h1>
+                        <img src="img/logo.png" height="28">
                     </a>
                     <span class="navbar-burger burger" data-target="navbar">
                         <span></span>
@@ -12,7 +12,7 @@
                         <span></span>
                     </span>
                 </div>
-                <div id="navbar" class="navbar-menu">
+                <div class="navbar-menu">
                     <div class="navbar-end">
                         <a
                             class="navbar-item"
@@ -27,6 +27,14 @@
             </div>
         </nav>
         <router-view />
+        <footer id="footer" class="footer">
+            <div class="container">
+                <p class="content">
+                    Quality Tank S.A. de C.V.
+                    Todos los derechos reservados 2018
+                </p>
+            </div>
+        </footer>
     </div>
 </template>
 
@@ -48,13 +56,27 @@ export default {
         go (route) {
             this.$router.push ({ name: route })
             this.setRoute ()
+        },
+        handleScroll () {
+            if (window.scrollY > 80) {
+                this.scrolled = true;
+            } else {
+                this.scrolled = false;
+            }
         }
     },
     mounted () {
         this.setRoute ()
     },
+    beforeMount () {
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeDestroy () {
+        window.removeEventListener('scroll', this.handleScroll);
+    },
     data () {
         return {
+            scrolled: false,
             currentRoute: null,
             routes: {
                 ['main.home']: {
@@ -72,11 +94,6 @@ export default {
                     displayName: 'Servicios',
                     selected: false,
                 },
-                ['main.customers']: {
-                    name: 'main.customers',
-                    displayName: 'Clientes',
-                    selected: false,
-                },
                 ['main.contact']: {
                     name: 'main.contact',
                     displayName: 'Contacto',
@@ -87,3 +104,39 @@ export default {
     }
 }
 </script>
+
+<style lang="less">
+body {
+    font-family: 'Raleway', sans-serif !important;
+}
+
+#navbar {
+    background: none !important;
+    transition: all .2s;
+
+    &.scrolled {
+        background: #262627 !important;
+    }
+
+    .container {
+        padding: 0 !important;
+
+        .navbar-item {
+            padding: 32px 12px;
+            text-transform: uppercase;
+            border-top: 3px solid transparent;
+            color: #fff;
+
+            &.is-active {
+                background: none !important;
+                border-top: 3px solid #8cd50a;
+            }
+        }
+    }
+}
+#footer {
+    background: #161616 !important;
+    color: #fff !important;
+    padding: 0;
+}
+</style>

@@ -1,8 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import 'firebase/database';
 import 'firebase/storage';
 import 'firebase/functions';
+import 'firebase/firestore';
 
 firebase.initializeApp ({
     apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
@@ -14,14 +14,14 @@ firebase.initializeApp ({
 });
 
 const auth = firebase.auth ();
-const database = firebase.database ();
+const db = firebase.firestore();
 const storage = firebase.storage ();
 const functions = firebase.functions();
 
 export {
     firebase,
     auth,
-    database,
+    db,
     storage,
     functions,
 };

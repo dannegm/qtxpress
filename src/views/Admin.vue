@@ -1,37 +1,74 @@
 <template>
-    <v-app>
-        <v-toolbar app>
-            <v-btn icon @click="go('admin')">
-                <v-icon>home</v-icon>
+    <v-app id="login" v-if="!auth.is">
+        <v-layout row align-center justify-center>
+            <v-flex sm3>
+                <v-card class="p20">
+                    <v-card-title primary-title>
+                    </v-card-title>
+
+                    <v-card-actions>
+                        <v-btn block round large color="error" @click="requestLogin">
+                            Inicia con Google
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-flex>
+        </v-layout>
+    </v-app>
+    <v-app id="dashboard" v-else>
+        <v-navigation-drawer app clipped v-model="drawer">
+            <v-list dense>
+                <v-divider class="hidden"></v-divider>
+                <template
+                    v-for="route in Object.values(routes)">
+                    <v-list-tile :key="route.name" @click="go(route.name)">
+                        <v-list-tile-action>
+                            <v-icon>{{ route.icon }}</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title>
+                            {{ route.displayName }}
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-divider v-if="route.divider" :key="route.name"></v-divider>
+                </template>
+
+                <v-list-tile @click="requestOut">
+                    <v-list-tile-action>
+                        <v-icon>exit_to_app</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            Salir
+                        </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
+
+        <v-toolbar app clipped-left>
+            <v-btn icon @click.stop="drawer = !drawer">
+                <v-icon>menu</v-icon>
             </v-btn>
 
             <v-badge v-if="auth.is && user.role == 'super'" right overlap color="purple">
                 <v-icon slot="badge" dark size="10">fa-star</v-icon>
                 <v-avatar size="32">
-                    <img :src="user.photoURL" alt="Avatar" >
+                    <img :src="user.photoURL" />
                 </v-avatar>
             </v-badge>
 
             <v-avatar v-if="auth.is && (user.role != 'super' && user.role != 'moder')" size="32">
-                <img :src="user.photoURL" alt="Avatar" >
+                <img :src="user.photoURL" />
             </v-avatar>
 
             <v-toolbar-title v-text="title"></v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down">
-                <v-btn
-                    flat
-                    v-for="route in Object.values(routes)"
-                    :key="route.name"
-                    @click="go(route.name)">
-                    {{route.displayName}}
-                </v-btn>
             </v-toolbar-items>
 
-            <v-btn icon v-if="!auth.is" @click="requestLogin">
-                <v-icon>person</v-icon>
-            </v-btn>
-            <v-btn icon v-if="auth.is" @click="requestOut">
+            <v-btn icon @click="requestOut">
                 <v-icon>exit_to_app</v-icon>
             </v-btn>
         </v-toolbar>
@@ -51,7 +88,7 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use (Vuetify, { iconfont: 'mdi' })
 
-import { firebase, database, auth } from '@/services/firebase';
+import { firebase, db, auth } from '@/services/firebase';
 const GoogleAuthProvider = new firebase.auth.GoogleAuthProvider ();
 
 export default {
@@ -76,25 +113,24 @@ export default {
     },
     async mounted () {
         this.setRoute ()
-        auth.onAuthStateChanged (user => {
+        auth.onAuthStateChanged (async (user) => {
             this.auth.is = user ? true : false;
             if (this.auth.is) {
                 this.auth.uid = user.uid;
-                database.ref (`users/${user.uid}`).once ('value', results => {
-                    if (!results.val ()) {
-                        this.user = {
-                            uid : user.uid,
-                            email: user.email,
-                            name: user.displayName,
-                            role: 'player',
-                            timestamp: (new Date).getTime (),
-                            photoURL: user.photoURL,
-                        }
-                        database.ref (`users/${user.uid}`).set (this.user)
-                    } else {
-                        this.user = results.val ()
-                    }
-                })
+                const storedUser = await db.collection ('users').doc (user.uid).get ();
+                if (!storedUser.exists) {
+                    this.user = {
+                        uid : user.uid,
+                        email: user.email,
+                        name: user.displayName,
+                        role: 'none',
+                        registered_at: new Date (),
+                        photoURL: user.photoURL,
+                    };
+                    db.collection ('users').doc (user.uid).set (this.user);
+                } else {
+                    this.user = storedUser.data();
+                }
             }
         })
     },
@@ -104,23 +140,57 @@ export default {
                 is: false,
                 uid: null,
             },
-            user: {},
+            user: {
+                photoURL: `${process.env.BASE_URL}img/avatar-placeholder.png`,
+            },
 
             title: 'Panel de Administración',
+            drawer: true,
             currentRoute: null,
             routes: {
-                ['admin.test1']: {
-                    name: 'admin.test1',
-                    displayName: 'Test #1',
+                ['admin.resume']: {
+                    name: 'admin.resume',
+                    displayName: 'Resumen',
+                    icon: 'dashboard',
+                    selected: false,
+                    divider: true,
+                },
+                ['admin.slider']: {
+                    name: 'admin.slider',
+                    displayName: 'Slider',
+                    icon: 'view_carousel',
+                    selected: false,
+                    divider: true,
+                },
+                ['admin.settings']: {
+                    name: 'admin.settings',
+                    displayName: 'Configuración',
+                    icon: 'settings',
                     selected: false,
                 },
-                ['admin.test2']: {
-                    name: 'admin.test2',
-                    displayName: 'Test #2',
+                ['admin.users']: {
+                    name: 'admin.users',
+                    displayName: 'Usuarios',
+                    icon: 'person',
                     selected: false,
+                    divider: true,
                 },
             }
         }
     }
 }
 </script>
+<style lang="less" scoped>
+.v-card {
+    padding: 24px !important;
+    .v-card__actions {
+        margin-top: 24px;
+    }
+}
+.hidden {
+    visibility: hidden !important;
+}
+.v-divider {
+    margin: 0.4em 0 !important;
+}
+</style>

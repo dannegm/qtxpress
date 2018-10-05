@@ -13,7 +13,7 @@ export default {
                 this.$router.push ({ name: 'main.home' })
             }
             if (this.$router.currentRoute.name == 'admin') {
-                this.$router.push ({ name: 'admin.test1' })
+                this.$router.push ({ name: 'admin.resume' })
             }
         },
     },
