@@ -1,19 +1,6 @@
 <template>
     <div class="home">
-        <section id="slider"
-            class="hero is-large"
-            style="background-image: url('img/slider/slider1.jpg') !important">
-            <div class="hero-body">
-                <div class="container">
-                    <p class="title" v-appear="'slideInLeft'">
-                        Ubicación Estratégica
-                    </p>
-                    <p class="subtitle" v-appear="'slideInRight'">
-                        Oficina ubicada estratégicamente en Cadereyta Jiménez, Nuevo León para optimizar los tiempos de entrega.
-                    </p>
-                </div>
-            </div>
-        </section>
+        <SlideShow :slides="slides" />
         <section id="slider-footer" class="hero">
             <div class="hero-body">
                 <div class="container" v-appear="'slideInLeft'">
@@ -107,8 +94,28 @@
 </template>
 
 <script>
+import SlideShow from '@/components/SlideShow'
 export default {
     name: 'home',
+    components: {
+        SlideShow,
+    },
+    data () {
+        return {
+            slides: [
+                {
+                    background: 'img/slider/slider1.jpg',
+                    title: 'Ubicación Estratégica',
+                    subtitle: 'Oficina ubicada estratégicamente en Cadereyta Jiménez, Nuevo León para optimizar los tiempos de entrega.',
+                },
+                {
+                    background: 'img/slider/slider2.jpg',
+                    title: 'Quality Tank',
+                    subtitle: 'Empresa lider en servicios de autotransporte de hidrocarburos y materiales peligrosos.',
+                },
+            ]
+        }
+    }
 }
 </script>
 
