@@ -18,6 +18,8 @@
                         </div>
                     </div>
                 </div>
+
+                <img id="trailer" src="img/home/trailer.png" v-appear="'slideInRight'" />
             </div>
         </section>
         <section id="separator" class="hero has-text-centered">
@@ -121,31 +123,6 @@ export default {
 
 <style lang="less" scoped>
 .home {
-    #slider {
-        background: linear-gradient(to bottom, #1c1928 0%,#100735 100%) !important;
-        background-position: center !important;
-        background-size: cover !important;
-
-        .hero-body {
-            padding-bottom: 12rem !important;
-            padding-top: 14rem !important;
-
-            .title, .subtitle {
-                color: #ffffff;
-            }
-
-            .title {
-                font-size: 3.2em !important;
-                font-weight: 600 !important;
-            }
-
-            .subtitle {
-                font-size: 1.6em !important;
-                margin-top: 1em;
-                width: 45%;
-            }
-        }
-    }
     #slider-footer {
         background: #cfcfcf !important;
         .qt-truck {
@@ -157,6 +134,13 @@ export default {
         .subtitle {
             font-size: 1em !important;
             margin-top: -10px !important;
+        }
+        #trailer {
+            position: absolute;
+            left: 50%;
+            margin-left: 243px;
+            margin-top: -190px;
+            width: 322px;
         }
     }
     #separator {

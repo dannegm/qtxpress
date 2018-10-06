@@ -24,7 +24,7 @@
                                 class="button is-link is-fullwidth"
                                 :class="{'is-loading':isSending}"
                                 @click="sendEmail()">
-                                Send message
+                                Enviar
                             </button>
                         </p>
                     </b-field>

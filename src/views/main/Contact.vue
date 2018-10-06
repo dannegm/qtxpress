@@ -47,7 +47,7 @@
                         <div class="slot column is-one-third">
                             <div class="media">
                                 <div class="media-left">
-                                    <i class="qt qt-message"></i>
+                                    <i class="qt qt-phone"></i>
                                 </div>
                                 <div class="media-phone">
                                     <p class="title is-4">
