@@ -3,7 +3,7 @@
         <section id="header" class="hero is-medium">
             <div class="hero-body">
                 <div class="container">
-                    <p class="title">
+                    <p class="title" v-appear="'slideInLeft'">
                         Nosotros
                     </p>
                 </div>
@@ -13,17 +13,17 @@
             <div class="container">
                 <div class="columns">
                     <div class="column is-three-fifths">
-                        <h1 class="title">
+                        <h1 class="title" v-appear="'slideInLeft'">
                             Nuestra <b>Empresa</b>
                         </h1>
-                        <p>
+                        <p v-appear="'slideInUp'">
                             Somos una empresa con más de 20 años de experiencia, autorizada por la secretaría de comunicaciones y
                             transportes para el servicio público federal de carga de Materiales y Residuos Peligrosos, otorgamos
                             servicio desde las terminales de almacenamiento y reparto de PEMEX Refinación, Terminales de Nutstar
                             en USA, hasta la puerta de sus instalaciones brindando confianza y la satisfacción de nuestros clientes.
                         </p>
                     </div>
-                    <div class="column is-one-fifths is-offset-one-fifth has-text-right">
+                    <div class="column is-one-fifths is-offset-one-fifth has-text-right" v-appear="'slideInRight'">
                         <figure class="image is-3by2">
                             <img src="/img/logo-large.png" />
                         </figure>
@@ -31,12 +31,12 @@
                 </div>
             </div>
         </section>
-        <section id='why-trust'>
+        <section id='why-trust' v-appear="'slideInUp'">
             <div class="container">
                 <div class="notification is-link">
                     <div class="columns">
                         <div class="column is-two-fifths">
-                            <h1 class="title">
+                            <h1 class="title" v-appear="'slideInLeft'">
                                 ¿Por qué
                                 <br />confiar en
                                 <br />Quality Tank?
@@ -53,7 +53,7 @@
                 </div>
             </div>
         </section>
-        <section id="separator" class="hero has-text-centered">
+        <section id="separator" class="hero has-text-centered" v-appear="'slideInUp'">
             <div class="hero-body">
                 <div class="container">
                     <h1 class="title">
@@ -151,6 +151,19 @@ export default {
     #company {
         margin: 3rem;
         .title {
+            &:before {
+                display: block;
+                content: ' ';
+                background: #340885;
+                position: absolute;
+                height: 4px;
+                width: 3rem;
+                margin-top: 20px;
+                margin-left: -4rem;
+            }
+
+            margin-left: 4rem;
+            font-size: 1.8em !important;
             font-weight: 600;
             b {
                 color: #34088f;
@@ -160,13 +173,25 @@ export default {
     #why-trust {
         .notification {
             background: #34088f !important;
-            padding: 2rem 10rem;
+            padding: 2rem 8rem;
             .column {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
             }
             .title {
+                &:before {
+                    display: block;
+                    content: ' ';
+                    background: #8cd50a;
+                    position: absolute;
+                    height: 4px;
+                    width: 3rem;
+                    margin-top: 60px;
+                    margin-left: -4rem;
+                }
+
+                margin-left: 4rem;
                 font-size: 1.6em !important;
             }
             p {
@@ -175,8 +200,23 @@ export default {
         }
     }
     #separator {
+        &:before {
+            display: block;
+            content: ' ';
+            background: #340885;
+            position: absolute;
+            left: 50%;
+            margin-left: -25vw;
+            z-index: -1;
+            height: 4px;
+            width: 50vw;
+            margin-top: 87px;
+        }
         .title {
             font-size: 2em !important;
+            background: #fff;
+            display: inline-block;
+            padding: 0 2rem;
             b {
                 color: #34088f;
             }

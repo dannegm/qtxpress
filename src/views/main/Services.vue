@@ -3,7 +3,7 @@
         <section id="header" class="hero is-medium">
             <div class="hero-body">
                 <div class="container">
-                    <p class="title">
+                    <p class="title" v-appear="'slideInLeft'">
                         Servicios
                     </p>
                 </div>
@@ -12,14 +12,14 @@
         <section id="headline">
             <div class="hero-body">
                 <div class="container">
-                    <h1 class="title">
+                    <h1 class="title" v-appear="'slideInLeft'">
                         Autotransporte <b>de hidrocarburos</b>
                         <br /> y <b>Materiales Peligrosos</b>
                     </h1>
                 </div>
             </div>
         </section>
-        <section id="services">
+        <section id="services" v-appear="'slideInUp'">
             <div class="container">
                 <div class="columns is-variable is-6">
                     <div class="column is-half">
@@ -56,7 +56,7 @@
                 </div>
             </div>
         </section>
-        <section id="benefits">
+        <section id="benefits" v-appear="'slideInUp'">
             <div class="container">
                 <div class="notification is-dark">
                     <div class="headline has-text-centered">
@@ -68,7 +68,7 @@
                         </p>
                     </div>
                     <div class="columns">
-                        <div class="slot column is-one-third">
+                        <div class="slot column is-one-third" v-appear="'slideInLeft'">
                             <h1 class="title">
                                 <i class="qt qt-marker"></i>
                                 Ubicación
@@ -78,7 +78,7 @@
                                 Oficina ubicada estrategicamente en Cadereyta Jimenez, Nuevo León, para optimizar los tiempos de traslado.
                             </p>
                         </div>
-                        <div class="slot column is-one-third">
+                        <div class="slot column is-one-third" v-appear="'slideInUp'">
                             <h1 class="title">
                                 <i class="qt qt-handler"></i>
                                 Operadores
@@ -88,7 +88,7 @@
                                 Personal calificado y expertos en el transporte  de combustibles y residuos peligrosos.
                             </p>
                         </div>
-                        <div class="slot column is-one-third">
+                        <div class="slot column is-one-third" v-appear="'slideInRight'">
                             <h1 class="title">
                                 <i class="qt qt-haarp"></i>
                                 Rastreo
@@ -137,6 +137,18 @@ export default {
     }
     #headline {
         .title {
+            &:before {
+                display: block;
+                content: ' ';
+                background: #340885;
+                position: absolute;
+                height: 4px;
+                width: 3rem;
+                margin-top: 44px;
+                margin-left: -4rem;
+            }
+
+            margin-left: 4rem;
             font-size: 1.8em !important;
             b {
                 color: #34088f !important;
@@ -174,6 +186,24 @@ export default {
                 margin-top: 4rem;
 
                 .title {
+                    &:before, &:after {
+                        display: block;
+                        content: ' ';
+                        background: #8cd50a;
+                        width: 3rem;
+                        height: 4px;
+                        margin-top: 20px;
+                    }
+                    &:before {
+                        margin-right: 1rem;
+                        float: left;
+                    }
+                    &:after {
+                        margin-left: 1rem;
+                        float: right;
+                    }
+
+                    display: inline-block;
                     font-size: 2rem !important;
                     font-weight: 600;
                     margin-bottom: 2rem;

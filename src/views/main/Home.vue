@@ -22,8 +22,8 @@
                 <img id="trailer" src="img/home/trailer.png" v-appear="'slideInRight'" />
             </div>
         </section>
-        <section id="separator" class="hero has-text-centered">
-            <div class="hero-body" v-appear="'slideInUp'">
+        <section id="separator" class="hero has-text-centered" v-appear="'slideInUp'">
+            <div class="hero-body">
                 <div class="container">
                     <h1 class="title">
                         Confianza, <b>Innovación</b> y Adaptación
@@ -144,8 +144,23 @@ export default {
         }
     }
     #separator {
+        &:before {
+            display: block;
+            content: ' ';
+            background: #340885;
+            position: absolute;
+            left: 50%;
+            margin-left: -25vw;
+            z-index: -1;
+            height: 4px;
+            width: 50vw;
+            margin-top: 87px;
+        }
         .title {
             font-size: 2em !important;
+            background: #fff;
+            display: inline-block;
+            padding: 0 2rem;
             b {
                 color: #34088f;
             }

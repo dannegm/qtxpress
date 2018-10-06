@@ -3,7 +3,7 @@
         <section id="header" class="hero is-medium">
             <div class="hero-body">
                 <div class="container">
-                    <p class="title">
+                    <p class="title" v-appear="'slideInLeft'">
                         Contacto
                     </p>
                 </div>
@@ -14,7 +14,7 @@
             <div class="hero-body">
                 <div class="container">
                     <div class="columns">
-                        <div class="slot column is-one-third">
+                        <div class="slot column is-one-third" v-appear="'slideInUp'">
                             <div class="media">
                                 <div class="media-left">
                                     <i class="qt qt-marker"></i>
@@ -29,7 +29,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="slot column is-one-third">
+                        <div class="slot column is-one-third" v-appear="'slideInUp'">
                             <div class="media">
                                 <div class="media-left">
                                     <i class="qt qt-message"></i>
@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="slot column is-one-third">
+                        <div class="slot column is-one-third" v-appear="'slideInUp'">
                             <div class="media">
                                 <div class="media-left">
                                     <i class="qt qt-phone"></i>
@@ -68,21 +68,21 @@
             <div class="container">
                 <div class="columns">
                     <div class="column is-half">
-                        <h1 class="title">Estamos para <b>Servirte</b></h1>
-                        <p>
+                        <h1 class="title" v-appear="'slideInLeft'">Estamos para <b>Servirte</b></h1>
+                        <p v-appear="'slideInUp'">
                             <b>¿Te interesa alguno de nuestros servicios? </b>
                             <br />Regístra tus datos en el siguiente formulario y en breve nos comunicaremos contigo
                             para darle seguimiento a tu solicitud, duda o comentario.
                         </p>
                     </div>
                     <div class="column is-half">
-                        <ContactForm />
+                        <ContactForm v-appear="'slideInRight'" />
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="map" style="height: 500px;">
+        <section id="map" style="height: 500px;" v-appear="'slideInUp'">
             <GmapMap
                 :center="mapLocation"
                 :zoom="8"
@@ -187,6 +187,18 @@ export default {
     #form {
         margin-top: 2rem;
         .title {
+            &:before {
+                display: block;
+                content: ' ';
+                background: #340885;
+                position: absolute;
+                height: 4px;
+                width: 3rem;
+                margin-top: 20px;
+                margin-left: -4rem;
+            }
+
+            margin-left: 4rem;
             font-size: 1.8em !important;
             font-weight: 600;
 
