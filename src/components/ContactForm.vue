@@ -55,8 +55,14 @@ export default {
                     await sendEmail ({
                         from: `${this.name} <${this.email}>`,
                         to: 'dannegm@gmail.com',
-                        subject: `Tienes un mensade de ${this.name}`,
-                        text: this.message,
+                        subject: `Tienes un mensaje de ${this.name}`,
+                        text: `
+                        ${this.message}
+                        ----
+                        -: ${this.name}
+                        E: ${this.email}
+                        T: ${this.phone}
+                        `,
                     });
 
                     this.success ('El mensaje fue enviado');
