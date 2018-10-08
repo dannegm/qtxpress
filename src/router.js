@@ -9,8 +9,10 @@ import Services from './views/main/Services.vue'
 import Contact from './views/main/Contact.vue'
 
 import Admin from './views/Admin.vue'
-import Resume from './views/admin/TestOne.vue'
-import Users from './views/admin/TestTwo.vue'
+import Resume from './views/admin/Resume.vue'
+import Slider from './views/admin/Slider.vue'
+import Settings from './views/admin/Settings.vue'
+import Users from './views/admin/Users.vue'
 
 Vue.use(Router)
 
@@ -59,6 +61,16 @@ export default new Router ({
                     path: 'resume',
                     name: 'admin.resume',
                     component: Resume
+                },
+                {
+                    path: 'slider',
+                    name: 'admin.slider',
+                    component: Slider
+                },
+                {
+                    path: 'settings',
+                    name: 'admin.settings',
+                    component: Settings
                 },
                 {
                     path: 'users',

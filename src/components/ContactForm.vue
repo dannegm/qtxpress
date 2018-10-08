@@ -78,6 +78,7 @@ export default {
                 this.danger ('Verifica tu información de contacto');
                 if (!this.$v.name.required) this.errors.name = 'Escribe tu nombre';
                 if (!this.$v.email.required) this.errors.email = 'Escribe tu correo electrónico';
+                if (!this.$v.phone.numeric) this.errors.phone = 'Escribe un número de teléfono válido';
                 if (!this.$v.message.required) this.errors.message = 'Cuéntanos algo';
             }
         },
