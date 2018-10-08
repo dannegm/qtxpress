@@ -32,7 +32,7 @@
 
                         <v-divider class="no-margin"></v-divider>
 
-                        <v-card-text style="min-height: 200px;"></v-card-text>
+                        <div class="card-content" style="min-height: 200px;"></div>
                     </v-card>
                 </v-flex>
             </v-layout>

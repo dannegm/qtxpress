@@ -14,27 +14,69 @@
                             <v-toolbar-title class="body-2 grey--text">
                                 Usuarios
                             </v-toolbar-title>
-
                             <v-spacer></v-spacer>
-
-                            <v-btn icon>
-                                <v-icon>search</v-icon>
-                            </v-btn>
-
-                            <v-btn icon>
-                                <v-icon>apps</v-icon>
-                            </v-btn>
-
-                            <v-btn icon>
-                                <v-icon>more_vert</v-icon>
-                            </v-btn>
                         </v-toolbar>
-
                         <v-divider class="no-margin"></v-divider>
 
-                        <v-card-text style="min-height: 200px;">
+                        <div class="card-content">
+                            <div v-if="!loaded" class="text-xs-center">
+                                <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                            </div>
+                            <v-list v-if="loaded">
+                                <v-subheader>
+                                    Usuarios Activos
+                                </v-subheader>
+                                <template v-for="(user, index) in users.filter(i => i.active)">
+                                    <v-list-tile
+                                        avatar
+                                        two-line
+                                        :key="`${user.uid}.list`"
+                                        :class="{ 'blue-grey lighten-5': !user.active }">
+                                        <v-list-tile-avatar v-if="user.photoURL">
+                                            <img :src="user.photoURL" />
+                                        </v-list-tile-avatar>
+                                        <v-list-tile-avatar v-else>
+                                            <img :src="photoPlaceholder" />
+                                        </v-list-tile-avatar>
 
-                        </v-card-text>
+                                        <v-list-tile-content>
+                                            <v-list-tile-title>{{user.name}}</v-list-tile-title>
+                                            <v-list-tile-sub-title>{{user.email}}</v-list-tile-sub-title>
+                                        </v-list-tile-content>
+
+                                        <v-list-tile-action>
+                                            <v-icon color="grey lighten-1" small>fas fa-pen</v-icon>
+                                        </v-list-tile-action>
+                                    </v-list-tile>
+                                </template>
+
+                                <v-subheader>
+                                    Sin Actividad
+                                </v-subheader>
+                                <template v-for="(user, index) in users.filter(i => !i.active)">
+                                    <v-list-tile
+                                        avatar
+                                        two-line
+                                        :key="`${user.uid}.list`"
+                                        :class="{ 'blue-grey lighten-5': !user.active }">
+                                        <v-list-tile-avatar v-if="user.photoURL">
+                                            <img :src="user.photoURL" />
+                                        </v-list-tile-avatar>
+                                        <v-list-tile-avatar v-else>
+                                            <img :src="photoPlaceholder" />
+                                        </v-list-tile-avatar>
+
+                                        <v-list-tile-content>
+                                            <v-list-tile-title>{{user.name}}</v-list-tile-title>
+                                            <v-list-tile-sub-title>{{user.email}}</v-list-tile-sub-title>
+                                        </v-list-tile-content>
+
+                                        <v-list-tile-action>
+                                        </v-list-tile-action>
+                                    </v-list-tile>
+                                </template>
+                            </v-list>
+                        </div>
 
                         <v-fab-transition>
                             <v-btn color="pink" dark absolute bottom right fab>
@@ -48,10 +90,16 @@
     </div>
 </template>
 <script>
+import { firebase, db, auth } from '@/services/firebase';
 export default {
     methods: {
         toogleDrawer () {
             this.$store.commit ('drawerOpen', !this.drawerOpen);
+        },
+        async getUsers () {
+            const usersSnapshot = await db.collection ('users').get ();
+            this.users = usersSnapshot.docs.map (doc => doc.data());
+            this.loaded = true;
         }
     },
     computed: {
@@ -59,6 +107,16 @@ export default {
             return this.$store.state.drawerOpen;
         }
     },
+    async mounted () {
+        await this.getUsers ();
+    },
+    data () {
+        return {
+            loaded: false,
+            photoPlaceholder: `${process.env.BASE_URL}img/avatar-placeholder.png`,
+            users: [],
+        }
+    }
 }
 </script>
 <style lang="less" scoped>

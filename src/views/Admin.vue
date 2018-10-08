@@ -4,7 +4,7 @@
             <v-flex v-if="!auth.unauthorized" sm3 class="login-container">
                 <v-icon x-large class="icon-logo">fas fa-th-large</v-icon>
                 <h1 class="display-1">Dashboard</h1>
-                <p class="subheading">Inicia sesión con tu cuenta de <b class="blue--text">Google</b> para acceder al <b class="purple--text">dashboard</b>.</p>
+                <p class="subheading">Inicia sesión con tu cuenta de <b class="indigo--text">Google</b> para acceder al <b class="purple--text">dashboard</b>.</p>
 
                 <v-btn round large color="error" @click="requestLogin">
                     Inicia con Google
@@ -15,8 +15,7 @@
                 <v-avatar :size="76" color="purple">
                     <img :src="user.photoURL" />
                 </v-avatar>
-                <h1 class="headline">Bienvenido</h1>
-                <h1 class="display-1">{{user.name}}</h1>
+                <h1 class="display-1">Bienvenido</h1>
                 <p class="subheading">No tienes permisos para acceder al <b class="purple--text">dashboard</b>, por favor contacta con tu administrador.</p>
 
                 <v-btn round large color="error" @click="requestLogin">
@@ -84,139 +83,142 @@
 </template>
 
 <script>
-    import Vue from 'vue'
-    import Vuetify from 'vuetify'
-    import '@/plugins/vuetify';
-    import 'vuetify/dist/vuetify.min.css'
-    import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import Vue from 'vue'
+import Vuetify from 'vuetify'
+import '@/plugins/vuetify';
+import 'vuetify/dist/vuetify.min.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
-    Vue.use (Vuetify, { iconfont: 'mdi' })
+Vue.use (Vuetify, { iconfont: 'mdi' })
 
-    import { firebase, db, auth } from '@/services/firebase';
-    const GoogleAuthProvider = new firebase.auth.GoogleAuthProvider ();
+import { firebase, db, auth } from '@/services/firebase';
+const GoogleAuthProvider = new firebase.auth.GoogleAuthProvider ();
 
-    export default {
-        methods: {
-            async requestLogin () {
-                return await auth.signInWithPopup (GoogleAuthProvider)
-            },
-            async requestOut () {
-                this.auth.is = false;
-                this.auth.unauthorized = false;
-                return await auth.signOut ()
-            },
-            setRoute () {
-                this.currentRoute = this.$router.currentRoute.name
-                Object.values (this.routes).forEach (route => {
-                    this.routes [route.name].selected = false
-                })
-                this.routes [this.currentRoute].selected = true
-            },
-            go (route) {
-                this.$router.push ({ name: route })
-            }
+export default {
+    methods: {
+        async requestLogin () {
+            return await auth.signInWithPopup (GoogleAuthProvider)
         },
-        async mounted () {
-            this.setRoute ()
-            auth.onAuthStateChanged (async (user) => {
-                if (!this.auth.is) {
-                    this.auth.uid = user.uid;
-                    const storedUser = await db.collection ('users').doc (user.uid).get ();
-                    console.log(storedUser.exists);
-                    console.log(storedUser);
-                    if (!storedUser.exists) {
-
-                        this.user = {
-                            uid : user.uid,
-                            email: user.email,
-                            name: user.displayName,
-                            role: 'none',
-                            registered_at: new Date (),
-                            photoURL: user.photoURL,
-                        };
-                        /*
-                        db.collection ('users').doc (user.uid).set (this.user);
-                        */
-                        this.auth.is = false;
-                        this.auth.unauthorized = true;
-                    } else {
-                        this.auth.is = true;
-                        this.auth.unauthorized = false;
-                        this.user = storedUser.data();
-                    }
-                }
+        async requestOut () {
+            this.auth.is = false;
+            this.auth.unauthorized = false;
+            return await auth.signOut ()
+        },
+        setRoute () {
+            this.currentRoute = this.$router.currentRoute.name
+            Object.values (this.routes).forEach (route => {
+                this.routes [route.name].selected = false
             })
+            this.routes [this.currentRoute].selected = true
         },
-        watch: {
-            $route () {
-                this.setRoute ()
-            },
-            drawerOpen (o, n) {
-                console.log(o, n)
-            },
-        },
-        computed: {
-            drawerOpen () {
-                return this.$store.state.drawerOpen;
-            }
-        },
-        data () {
-            return {
-                auth: {
-                    is: false,
-                    uid: null,
-                    unauthorized: false,
-                },
-                user: {
-                    photoURL: `${process.env.BASE_URL}img/avatar-placeholder.png`,
-                },
+        go (route) {
+            this.$router.push ({ name: route })
+        }
+    },
+    async mounted () {
+        this.setRoute ()
+        auth.onAuthStateChanged (async (user) => {
+            if (!this.auth.is) {
+                const usersSnapshot = await db.collection ('users')
+                    .where('email', '==', user.email).get ();
+                const firstUserFound = usersSnapshot.docs[0];
 
-                title: 'Panel de Administración',
-                currentRoute: null,
-                routes: {
-                    ['admin']: {
-                        name: 'admin',
-                        displayName: 'Root',
-                        icon: 'dashboard',
-                        selected: false,
-                        divider: false,
-                        navbar: false,
-                    },
-                    ['admin.resume']: {
-                        name: 'admin.resume',
-                        displayName: 'Resumen',
-                        icon: 'dashboard',
-                        selected: false,
-                        divider: true,
-                        navbar: true,
-                    },
-                    ['admin.slider']: {
-                        name: 'admin.slider',
-                        displayName: 'Slide Show',
-                        icon: 'view_carousel',
-                        selected: false,
-                        divider: true,
-                        navbar: true,
-                    },
-                    ['admin.settings']: {
-                        name: 'admin.settings',
-                        displayName: 'Configuración',
-                        icon: 'settings',
-                        selected: false,
-                        navbar: true,
-                    },
-                    ['admin.users']: {
-                        name: 'admin.users',
-                        displayName: 'Usuarios',
-                        icon: 'person',
-                        selected: false,
-                        divider: true,
-                        navbar: true,
-                    },
+                this.auth.uid = user.uid;
+                this.user = {
+                    uid : user.uid,
+                    email: user.email,
+                    name: user.displayName,
+                    role: 'none',
+                    registered_at: new Date (),
+                    photoURL: user.photoURL,
+                    active: true,
+                };
+
+                if (typeof firstUserFound == 'undefined') {
+                    this.auth.is = false;
+                    this.auth.unauthorized = true;
+                } else {
+                    this.auth.is = true;
+                    this.auth.unauthorized = false;
+                    if (firstUserFound.data().uid != user.uid) {
+                        const tempUID = firstUserFound.data().uid;
+                        await await db.collection ('users').doc (tempUID).delete ();
+                    }
+                    await db.collection ('users').doc (user.uid).set (this.user);
                 }
+            }
+        })
+    },
+    watch: {
+        $route () {
+            this.setRoute ()
+        },
+        drawerOpen (o, n) {
+            console.log(o, n)
+        },
+    },
+    computed: {
+        drawerOpen () {
+            return this.$store.state.drawerOpen;
+        }
+    },
+    data () {
+        return {
+            auth: {
+                is: false,
+                uid: null,
+                unauthorized: false,
+            },
+            user: {
+                photoURL: `${process.env.BASE_URL}img/avatar-placeholder.png`,
+            },
+
+            title: 'Panel de Administración',
+            currentRoute: null,
+            routes: {
+                ['admin']: {
+                    name: 'admin',
+                    displayName: 'Root',
+                    icon: 'dashboard',
+                    selected: false,
+                    divider: false,
+                    navbar: false,
+                },
+                ['admin.resume']: {
+                    name: 'admin.resume',
+                    displayName: 'Resumen',
+                    icon: 'dashboard',
+                    selected: false,
+                    divider: true,
+                    navbar: true,
+                },
+                ['admin.slider']: {
+                    name: 'admin.slider',
+                    displayName: 'Slide Show',
+                    icon: 'view_carousel',
+                    selected: false,
+                    divider: true,
+                    navbar: true,
+                },
+                ['admin.settings']: {
+                    name: 'admin.settings',
+                    displayName: 'Configuración',
+                    icon: 'settings',
+                    selected: false,
+                    navbar: true,
+                },
+                ['admin.users']: {
+                    name: 'admin.users',
+                    displayName: 'Usuarios',
+                    icon: 'person',
+                    selected: false,
+                    divider: true,
+                    navbar: true,
+                },
             }
         }
     }
+}
 </script>
 <style lang="less" scoped>
 #login {
