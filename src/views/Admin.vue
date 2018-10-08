@@ -1,7 +1,7 @@
 <template>
     <v-app id="login" v-if="!auth.is">
         <v-layout row align-center justify-center>
-            <v-flex sm3 class="login-container">
+            <v-flex v-if="!auth.unauthorized" sm3 class="login-container">
                 <v-icon x-large class="icon-logo">fas fa-th-large</v-icon>
                 <h1 class="display-1">Dashboard</h1>
                 <p class="subheading">Inicia sesión con tu cuenta de <b class="blue--text">Google</b> para acceder al <b class="purple--text">dashboard</b>.</p>
@@ -10,6 +10,21 @@
                     Inicia con Google
                     <v-icon right>fab fa-google</v-icon>
                 </v-btn>
+            </v-flex>
+            <v-flex v-if="auth.unauthorized" sm3 class="login-container">
+                <v-avatar :size="76" color="purple">
+                    <img :src="user.photoURL" />
+                </v-avatar>
+                <h1 class="headline">Bienvenido</h1>
+                <h1 class="display-1">{{user.name}}</h1>
+                <p class="subheading">No tienes permisos para acceder al <b class="purple--text">dashboard</b>, por favor contacta con tu administrador.</p>
+
+                <v-btn round large color="error" @click="requestLogin">
+                    Cambiar de cuenta
+                    <v-icon right>fab fa-google</v-icon>
+                </v-btn>
+
+                <v-btn flat small @click="requestOut">Cerrar sesión</v-btn>
             </v-flex>
         </v-layout>
     </v-app>
@@ -86,6 +101,8 @@
                 return await auth.signInWithPopup (GoogleAuthProvider)
             },
             async requestOut () {
+                this.auth.is = false;
+                this.auth.unauthorized = false;
                 return await auth.signOut ()
             },
             setRoute () {
@@ -102,11 +119,13 @@
         async mounted () {
             this.setRoute ()
             auth.onAuthStateChanged (async (user) => {
-                this.auth.is = user ? true : false;
-                if (this.auth.is) {
+                if (!this.auth.is) {
                     this.auth.uid = user.uid;
                     const storedUser = await db.collection ('users').doc (user.uid).get ();
+                    console.log(storedUser.exists);
+                    console.log(storedUser);
                     if (!storedUser.exists) {
+
                         this.user = {
                             uid : user.uid,
                             email: user.email,
@@ -115,8 +134,14 @@
                             registered_at: new Date (),
                             photoURL: user.photoURL,
                         };
+                        /*
                         db.collection ('users').doc (user.uid).set (this.user);
+                        */
+                        this.auth.is = false;
+                        this.auth.unauthorized = true;
                     } else {
+                        this.auth.is = true;
+                        this.auth.unauthorized = false;
                         this.user = storedUser.data();
                     }
                 }
@@ -140,6 +165,7 @@
                 auth: {
                     is: false,
                     uid: null,
+                    unauthorized: false,
                 },
                 user: {
                     photoURL: `${process.env.BASE_URL}img/avatar-placeholder.png`,
@@ -196,13 +222,16 @@
 #login {
     .login-container {
         text-align: center;
-        .icon-logo {
+        .icon-logo, .v-avatar {
             font-size: 64px !important;
             color: #eaeaea;
             margin-bottom: 32px;
         }
         .subheading {
             color: #6b6b6b;
+        }
+        .caption {
+            margin-top: 10px;
         }
     }
 }
