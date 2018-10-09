@@ -28,7 +28,7 @@
         </v-layout>
     </v-app>
     <v-app id="dashboard" v-else>
-        <v-navigation-drawer id="drawer" app clipped :value="drawerOpen">
+        <v-navigation-drawer id="drawer" app clipped :value="drawer">
             <v-toolbar flat class="transparent">
                 <v-list class="pa-0">
                     <v-list-tile avatar>
@@ -77,7 +77,18 @@
         </v-navigation-drawer>
 
         <v-content>
-            <router-view />
+            <v-card flat transition="slide-y-reverse-transition">
+                <v-toolbar color="primary" dark extended flat>
+                    <v-btn icon @click.stop="drawer = !drawer">
+                        <v-icon>menu</v-icon>
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click.stop="requestOut">
+                        <v-icon>exit_to_app</v-icon>
+                    </v-btn>
+                </v-toolbar>
+                <router-view />
+            </v-card>
         </v-content>
     </v-app>
 </template>
@@ -153,17 +164,10 @@ export default {
         $route () {
             this.setRoute ()
         },
-        drawerOpen (o, n) {
-            console.log(o, n)
-        },
-    },
-    computed: {
-        drawerOpen () {
-            return this.$store.state.drawerOpen;
-        }
     },
     data () {
         return {
+            drawer: true,
             auth: {
                 is: false,
                 uid: null,
