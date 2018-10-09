@@ -142,7 +142,7 @@ export default {
                     this.auth.unauthorized = false;
                     if (firstUserFound.data().uid != user.uid) {
                         const tempUID = firstUserFound.data().uid;
-                        await await db.collection ('users').doc (tempUID).delete ();
+                        await db.collection ('users').doc (tempUID).delete ();
                     }
                     await db.collection ('users').doc (user.uid).set (this.user);
                 }
